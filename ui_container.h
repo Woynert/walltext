@@ -26,3 +26,10 @@ public:
 		simg = WidScaledImage();
 	}*/
 };
+
+//wallpapers manager
+enum{
+	MANUAL,
+	NITROGEN,
+	XFCE4
+};

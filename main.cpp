@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 //toggle widget visibility
 //GtkWidget receiver, Gpointer data
 void wdk_toggle_visibility(GtkWidget* cbx, gpointer data){
@@ -22,7 +23,7 @@ void wdk_toggle_visibility(GtkWidget* cbx, gpointer data){
 		gtk_widget_hide(GTK_WIDGET(wid));
 	}
 
-	cout << "Toggled" << endl;
+	cout << "combo box toggled to: " << (int) gtk_combo_box_get_active(GTK_COMBO_BOX (cbx)) << endl;
 }
 
 int
@@ -54,8 +55,8 @@ main (int argc, char **argv){
 	//get drawing area
 	ui.drawimage = gtk_builder_get_object(builder, "drw_imagePreview");
 	ui.simg = new WidScaledImage(ui.drawimage);
-	ui.simg->set_path(ui.path);
-	ui.simg->load_image(ui.error);
+	//ui.simg->set_path(ui.path);
+	//ui.simg->load_image(ui.error);
 
 	//signal needs a callback method (g handler) and a pointer with info (void*) or (gpointer)
 	g_signal_connect ( ui.drawimage, "draw", G_CALLBACK (&WidScaledImage::do_draw), ui.simg);
@@ -67,12 +68,12 @@ main (int argc, char **argv){
 	ui.cbxWppMgr = gtk_builder_get_object (builder, "cbxWallpaperManager");
 
 	//populate combobox
-	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), "0", "Manual");
-	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), "1", "Nitrogen");
-	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), "2", "Xfce4");
+	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), NULL, "Manual");
+	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), NULL, "Nitrogen");
+	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), NULL, "Xfce4");
 
 	//set default
-	gtk_combo_box_set_active (GTK_COMBO_BOX (ui.cbxWppMgr), 0);
+	gtk_combo_box_set_active (GTK_COMBO_BOX (ui.cbxWppMgr), NITROGEN);
 
 
 
