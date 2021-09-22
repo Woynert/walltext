@@ -1,7 +1,7 @@
-#include <gtk/gtk.h>
+//#include <gtk/gtk.h>
 using namespace std;
 
-class PictureView{
+class WidScaledImage{
 private:
 	GObject* da; //drawing area
 	GdkPixbuf *pixbuf; //pixbuf
@@ -9,10 +9,17 @@ private:
 	string path; //image path
 
 public:
+
 	//constructor
-	PictureView(GObject* da, string path, GError* error){
+	WidScaledImage(GObject* da){
 		this->da = da;
+	}
+
+	void set_path(string path){
 		this->path = path;
+	}
+
+	void load_image(GError* error){
 		this->pixbuf = gdk_pixbuf_new_from_file((this->path).c_str(), &error);
 		this->img_surface = gdk_cairo_surface_create_from_pixbuf(this->pixbuf, 1, NULL);
 	}
@@ -29,7 +36,7 @@ public:
         float aw, pw;
         aw = gtk_widget_get_allocated_width( GTK_WIDGET(this->da) );
         pw = gdk_pixbuf_get_width( this->pixbuf );
-        cout << aw/pw << endl;
+        //cout << aw/pw << endl;
         return (float) aw/pw;
 	}
 
@@ -37,8 +44,7 @@ public:
 	static void do_draw(GtkWidget *widget, cairo_t *cr, gpointer data){
 
 		//cast to PictureView*
-		PictureView* pv = (PictureView*) data;
-		cout << pv->path << endl;
+		WidScaledImage* pv = (WidScaledImage*) data;
 
 		float sf = pv->get_scale_factor();
 		cout << "sf: " << sf << endl;

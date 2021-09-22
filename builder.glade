@@ -33,7 +33,6 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-top">5</property>
                     <property name="label" translatable="yes">Wallpaper Manager</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -47,9 +46,35 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="cbxWallpaperManager">
+                  <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkComboBoxText" id="cbxWallpaperManager">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="btnLoadWallpaper">
+                        <property name="label" translatable="yes">Load</property>
+                        <property name="name">btnLoadWallpaper</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -59,7 +84,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">end</property>
                     <property name="hexpand">True</property>
@@ -92,7 +116,6 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-top">5</property>
                     <property name="label" translatable="yes">Manual</property>
                     <property name="xalign">0</property>
                     <attributes>
@@ -192,6 +215,21 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkSeparator">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-bottom">5</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
             </child>
@@ -204,7 +242,6 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-top">5</property>
                     <property name="label" translatable="yes">Label</property>
                     <property name="xalign">0</property>
                     <attributes>

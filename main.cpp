@@ -1,7 +1,9 @@
 #include <string>
 #include <iostream>
-#include "wgt_scaled_image.h"
-//#include <gtk/gtk.h>
+
+#include "ui_container.h"
+#include "image_loader.h"
+
 
 using namespace std;
 
@@ -28,55 +30,67 @@ main (int argc, char **argv){
 
 	string path = "/home/woynert/Pictures/NewTux.svg";
 
+	//ui container
+	UIContainer ui;
+	ui.path = path;
+
 	GtkBuilder* builder;
-	GObject* window;
-	GObject* drawimage; //gtk drawing area
-	GError* error = NULL;
 
 	//start gtk
 	gtk_init ( &argc , &argv );
 
 	//build interface
 	builder = gtk_builder_new();
-	if (gtk_builder_add_from_file (builder, "builder.glade", &error) == 0 ){
-		g_printerr ( "Error loading file: %s\n", error -> message );
-		g_clear_error ( &error );
+	if (gtk_builder_add_from_file (builder, "builder.glade", &ui.error) == 0 ){
+		g_printerr ( "Error loading file: %s\n", ui.error -> message );
+		g_clear_error ( &ui.error );
 		return 1;
 	}
 
 	//get window
-	window = gtk_builder_get_object (builder, "window");
-	g_signal_connect ( window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	ui.window = gtk_builder_get_object (builder, "window");
+	g_signal_connect ( ui.window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
 	//get drawing area
-	drawimage = gtk_builder_get_object(builder, "drw_imagePreview");
-	PictureView* pv = new PictureView(drawimage, path, error);
+	ui.drawimage = gtk_builder_get_object(builder, "drw_imagePreview");
+	ui.simg = new WidScaledImage(ui.drawimage);
+	ui.simg->set_path(ui.path);
+	ui.simg->load_image(ui.error);
 
 	//signal needs a callback method (g handler) and a pointer with info (void*) or (gpointer)
-	g_signal_connect ( drawimage, "draw", G_CALLBACK (&PictureView::do_draw), pv);
+	g_signal_connect ( ui.drawimage, "draw", G_CALLBACK (&WidScaledImage::do_draw), ui.simg);
+
 
 
 
 	//wallpaper manager
-	GObject* cbxWppMgr = gtk_builder_get_object (builder, "cbxWallpaperManager");
+	ui.cbxWppMgr = gtk_builder_get_object (builder, "cbxWallpaperManager");
 
 	//populate combobox
-	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (cbxWppMgr), "0", "Manual");
-	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (cbxWppMgr), "1", "Nitrogen");
-	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (cbxWppMgr), "2", "Xfce4");
+	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), "0", "Manual");
+	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), "1", "Nitrogen");
+	gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ui.cbxWppMgr), "2", "Xfce4");
 
 	//set default
-	gtk_combo_box_set_active (GTK_COMBO_BOX (cbxWppMgr), 0);
+	gtk_combo_box_set_active (GTK_COMBO_BOX (ui.cbxWppMgr), 0);
+
 
 
 
 	//manual config container
-	GObject* boxManualWallpaper = gtk_builder_get_object (builder, "boxManualWallpaper");
-
+	ui.boxManualWallpaper = gtk_builder_get_object (builder, "boxManualWallpaper");
 
 	//set signal
-	g_signal_connect ( cbxWppMgr, "changed", G_CALLBACK (wdk_toggle_visibility), boxManualWallpaper);
+	g_signal_connect ( ui.cbxWppMgr, "changed", G_CALLBACK (wdk_toggle_visibility), ui.boxManualWallpaper);
 
+
+
+
+	//button load wallpaper from manager
+	ui.btnLoadWallpaper = gtk_builder_get_object (builder, "btnLoadWallpaper");
+
+	//set signal
+	g_signal_connect ( ui.btnLoadWallpaper, "clicked", G_CALLBACK (load_image_and_show), &ui);
 
 
 	gtk_main();
