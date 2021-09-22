@@ -5,6 +5,23 @@
 
 using namespace std;
 
+//toggle widget visibility
+//GtkWidget receiver, Gpointer data
+void wdk_toggle_visibility(GtkWidget* cbx, gpointer data){
+
+	//get widget
+	GtkWidget* wid = GTK_WIDGET(data);
+
+	//check its 'manual'
+	if (gtk_combo_box_get_active(GTK_COMBO_BOX(cbx)) == 0){
+		gtk_widget_show(GTK_WIDGET(wid));
+	}
+	else{
+		gtk_widget_hide(GTK_WIDGET(wid));
+	}
+
+	cout << "Toggled" << endl;
+}
 
 int
 main (int argc, char **argv){
@@ -50,6 +67,16 @@ main (int argc, char **argv){
 
 	//set default
 	gtk_combo_box_set_active (GTK_COMBO_BOX (cbxWppMgr), 0);
+
+
+
+	//manual config container
+	GObject* boxManualWallpaper = gtk_builder_get_object (builder, "boxManualWallpaper");
+
+
+	//set signal
+	g_signal_connect ( cbxWppMgr, "changed", G_CALLBACK (wdk_toggle_visibility), boxManualWallpaper);
+
 
 
 	gtk_main();
