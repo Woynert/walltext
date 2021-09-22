@@ -9,7 +9,7 @@ using namespace std;
 class ImageLoader{
 private:
 	string path;
-	
+
 public:
 
 	void set_path(string path){

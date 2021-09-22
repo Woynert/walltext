@@ -1,7 +1,7 @@
 
 #create executable
 output: ./main.cpp
-	g++ -o exe ./main.cpp `pkg-config --cflags --libs gtk+-3.0`
+	g++ -o ./build/exe ./main.cpp `pkg-config --cflags --libs gtk+-3.0`
 
 #./build/main.o: main.cpp ./build/node_types.o
 #	g++ -c main.cpp -o ./build/main.o
@@ -13,7 +13,11 @@ output: ./main.cpp
 #	gcc -O2 -c ./lib/sqlite3.c -o ./build/sqlite3.o
 
 #delete build files
-#clean:
-#	rm ./build/*.o exe
+clean:
+	rm ./build/exe
+
+#compile and run
+run: output
+	./build/exe
 
 

@@ -42,7 +42,7 @@ main (int argc, char **argv){
 
 	//build interface
 	builder = gtk_builder_new();
-	if (gtk_builder_add_from_file (builder, "builder.glade", &ui.error) == 0 ){
+	if (gtk_builder_add_from_file (builder, "./ui/builder.ui", &ui.error) == 0 ){
 		g_printerr ( "Error loading file: %s\n", ui.error -> message );
 		g_clear_error ( &ui.error );
 		return 1;
